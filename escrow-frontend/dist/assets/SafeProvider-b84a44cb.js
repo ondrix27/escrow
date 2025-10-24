@@ -1,0 +1,1 @@
+import{SafeAppProvider as r}from"@safe-globalThis/safe-apps-provider";class o extends r{request(e){return e.method==="eth_requestAccounts"?this.request({method:"eth_accounts",params:[]}):super.request(e)}}export{o as SafeProvider};
