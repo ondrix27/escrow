@@ -10,7 +10,7 @@
     "deploy:bsc-testnet": "hardhat ignition deploy ignition/modules/OndrixEscrow.ts --network bscTestnet"
   },
   "dependencies": {
-    "@chainlink/contracts": "^0.6.1",
+    "@chainlink/contracts": "^1.5.0",
     "@openzeppelin/contracts": "^5.0.0"
   },
   "devDependencies": {
