@@ -29,18 +29,20 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Cache npm dependencies
-        uses: actions/cache@v3
-        with:
-          path: ondrix-escrow-evm/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install dependencies
+      - name: Clean install dependencies
         run: |
-          if [ -f package-lock.json ]; then
-            npm ci --no-audit --no-fund
+          rm -rf node_modules package-lock.json
+          npm install --no-audit --no-fund
+
+      - name: Verify Chainlink contracts
+        run: |
+          echo "Checking @chainlink/contracts installation..."
+          ls -la node_modules/@chainlink/contracts/src/v0.8/interfaces/ || echo "Chainlink interfaces not found"
+          if [ -f node_modules/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol ]; then
+            echo "✓ AggregatorV3Interface.sol found"
           else
-            npm install --no-audit --no-fund
+            echo "✗ AggregatorV3Interface.sol missing - reinstalling..."
+            npm install @chainlink/contracts@0.6.1 --save-exact
           fi
 
       - name: Hardhat compile (fail-fast)
